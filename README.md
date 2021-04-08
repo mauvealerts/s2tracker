@@ -4,13 +4,7 @@ Journal tracker for Spelunky 2 RTA speedrun categories.
 ![s2tracker.png](s2tracker.png "Comes in many shapes and sizes")
 
 ## Installation
-Run from source:
-```
-cd s2tracker
-npm install
-node index.js
-```
-Or just [get the release](https://github.com/Dregu/s2tracker/releases/latest) with nodejs packaged in.
+Get the release `s2tracker-win.exe` [here](https://github.com/spelunky-fyi/s2tracker/releases/latest)
 
 ## Usage
 
@@ -47,4 +41,24 @@ You can add some custom CSS in OBS to edit the appearance a bit.
 /* Hide places in category view */
 #places { display: none; }
 ```
-Check [main.css](https://github.com/Dregu/s2tracker/blob/master/static/main.css) for some more ideas.
+Check [main.css](https://github.com/spelunky-fyi/s2tracker/blob/master/static/main.css) for some more ideas.
+
+### Co-op
+
+1. Go to https://spelunky.fyi/tools/coop-aje-tracker/ and create a room. This will give you a room-code. Anyone you share this with can join your session.
+2. With `s2tracker-win.exe` running, visit http://localhost:27122/join-room and enter your room code with will connent your tracker to the lobby.
+
+## Development
+
+Running from source:
+```
+cd s2tracker
+npm install
+node index.js
+```
+
+## Packaging
+```
+npm install --also=dev
+.\node_modules\.bin\pkg .
+```
