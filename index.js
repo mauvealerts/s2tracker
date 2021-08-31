@@ -30,7 +30,8 @@ const tryInt = (value) => {
 const updateJournal = (newState) => {
   console.log('Updating state from other player.')
   newState.map((entry, idx) => {
-    if (entry) {
+    var authoritative = (fyiConnection == null)
+    if (authoritative || entry) {
       state['journal'][idx] = entry;
     }
   });
@@ -56,10 +57,10 @@ const connectFyi = (connectRoomCode) => {
     }
   })
 
-  ws.on('close',  (e) => {
+  ws.on('close', (e) => {
     console.log('Socket is closed.')
     fyiConnection = null;
-    if (roomCode){
+    if (roomCode) {
       console.log('Reconnect will be attempted in 1 second.', e.reason)
       setTimeout(() => {
         fyiConnection = connectFyi(roomCode);
@@ -76,7 +77,7 @@ const connectFyi = (connectRoomCode) => {
 }
 
 const broadcast = (status) => {
-  for(let client of expressWs.getWss().clients) {
+  for (let client of expressWs.getWss().clients) {
     client.send(JSON.stringify({ update: status }))
   }
 }
@@ -119,15 +120,15 @@ app.post('/', (req, res) => {
 app.ws('/', (ws, req) => {
   ws.on('message', (msg) => {
     console.log('Client is asking for', msg)
-    if(msg == 'state') {
+    if (msg == 'state') {
       ws.send(JSON.stringify({ state: state }))
     }
   })
 })
 
-var server = app.listen(27122, function() {
-    var port = server.address().port
-    console.log(`Tracker is listening on http://localhost:${port}`)
-    console.log(`If playing co-op join a room at http://localhost:${port}/join-room`)
-    open(`http://localhost:${port}`)
+var server = app.listen(27122, function () {
+  var port = server.address().port
+  console.log(`Tracker is listening on http://localhost:${port}`)
+  console.log(`If playing co-op join a room at http://localhost:${port}/join-room`)
+  open(`http://localhost:${port}`)
 })
