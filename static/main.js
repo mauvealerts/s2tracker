@@ -267,6 +267,12 @@ const found = (cat, i, f) => {
   }
 }
 
+const toggleItem = (cat, i) => {
+  var item = journal[cat].entries[i]
+  var f = item.found ? 0 : 1
+  found(cat, i, f)
+}
+
 const getId = (item) => {
   return item.toString().toLowerCase().replace(/[^a-z]*/g, '')
 }
@@ -370,7 +376,7 @@ const getItem = (cat, acat, item, n, f, a, num) => {
     el.dataset.item = item
     el.dataset.area = a
     el.dataset.n = n
-    el.onclick = function () { found(this.dataset.cat, parseInt(this.dataset.n), 1) }
+    el.onclick = function () { toggleItem(this.dataset.cat, parseInt(this.dataset.n), 1) }
     if (hash == 'area')
       el.style.order = num * 100 + n
     if (!document.getElementById('percent') && (acat == 'Generic' && hash == 'area')) {
