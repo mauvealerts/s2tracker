@@ -242,9 +242,15 @@ const found = (cat, i, f) => {
   f = parseInt(f)
   var item = journal[cat].entries[i]
   item.found = f
-  var el = document.querySelector('.'+getId(item.name))
-  if (el)
-    el.style.display = (f ? 'none' : 'inline-block')
+  var el = document.querySelector('.' + getId(item.name))
+  var expectedClass = f ? "done" : "notDone"
+  var unexpectedClass = f ? "notDone" : "done"
+  if (el) {
+    if (!el.classList.contains(expectedClass)) {
+      el.classList.add(expectedClass)
+      el.classList.remove(unexpectedClass)
+    }
+  }
   var num = 0
   for (let i of journal[cat].entries) {
     if (i.found) num++
@@ -259,6 +265,12 @@ const found = (cat, i, f) => {
     if (cel)
       cel.innerHTML = countChars()
   }
+}
+
+const toggleItem = (cat, i) => {
+  var item = journal[cat].entries[i]
+  var f = item.found ? 0 : 1
+  found(cat, i, f)
 }
 
 const getId = (item) => {
@@ -302,6 +314,8 @@ const getCat = (cat) => {
     else
       name.innerHTML = cat
     head.appendChild(name)
+    var progress = document.createElement('span')
+    progress.className = 'progress'
     if (hash != 'area' && hash != 'char') {
       name.onclick = function () { window.location.hash = this.innerHTML.toLowerCase() }
       var found = document.createElement('span')
@@ -314,18 +328,19 @@ const getCat = (cat) => {
       total.className = 'total'
       if (hash != 'area')
         total.innerHTML = journal[cat].size
-      head.appendChild(found)
-      head.appendChild(slash)
-      head.appendChild(total)
+      progress.appendChild(found)
+      progress.appendChild(slash)
+      progress.appendChild(total)
     } else if (hash == 'char') {
       var found = document.createElement('span')
       found.className = 'found'
       found.innerHTML = countChars()
       var slash = document.createElement('span')
       slash.innerHTML = '/20'
-      head.appendChild(found)
-      head.appendChild(slash)
+      progress.appendChild(found)
+      progress.appendChild(slash)
     }
+    head.appendChild(progress)
     el.id = getId(cat)
     el.className = 'cat'
     if (hash != 'area' && hash != 'char')
@@ -336,7 +351,7 @@ const getCat = (cat) => {
     el.appendChild(items)
     getJournal().appendChild(el)
   }
-  return document.querySelector('#'+getId(cat)+' .items')
+  return document.querySelector('#' + getId(cat) + ' .items')
 }
 
 const getItem = (cat, acat, item, n, f, a, num) => {
@@ -361,7 +376,7 @@ const getItem = (cat, acat, item, n, f, a, num) => {
     el.dataset.item = item
     el.dataset.area = a
     el.dataset.n = n
-    el.onclick = function () { found(this.dataset.cat, parseInt(this.dataset.n), 1) }
+    el.onclick = function () { toggleItem(this.dataset.cat, parseInt(this.dataset.n), 1) }
     if (hash == 'area')
       el.style.order = num * 100 + n
     if (!document.getElementById('percent') && (acat == 'Generic' && hash == 'area')) {
@@ -372,7 +387,7 @@ const getItem = (cat, acat, item, n, f, a, num) => {
     }
     items.appendChild(el)
   }
-  if(hash != 'char' || (cat == 'People' && n < 20))
+  if (hash != 'char' || (cat == 'People' && n < 20))
     return document.querySelector('.' + getId(item))
 }
 
@@ -383,7 +398,7 @@ const updateJournal = () => {
   var areatotal = []
   for (let [name, cat] of Object.entries(journal)) {
     if (name == 'Places') continue
-    const entries = data.slice(cat.offset, cat.offset+cat.size)
+    const entries = data.slice(cat.offset, cat.offset + cat.size)
     var n = 0
     for (let entry of cat.entries) {
       if (!areafound[entry.area]) areafound[entry.area] = 0
@@ -394,7 +409,7 @@ const updateJournal = () => {
     }
   }
   for (let [name, cat] of Object.entries(journal)) {
-    const entries = data.slice(cat.offset, cat.offset+cat.size)
+    const entries = data.slice(cat.offset, cat.offset + cat.size)
     journal[name].found = entryCount(entries)
     for (let i = 0; i < entries.length; ++i) {
       var area = journal[name].entries[i].area
@@ -408,7 +423,7 @@ const updateJournal = () => {
     }
   }
   var perc = document.getElementById('percent')
-  if(perc) perc.innerHTML = getPercent()
+  if (perc) perc.innerHTML = getPercent()
 }
 
 const hashChange = () => {

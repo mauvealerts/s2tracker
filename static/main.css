@@ -61,8 +61,14 @@ body {
   order: 0;
   cursor: pointer;
 }
+.done {
+  display: none
+}
 .terra, .hh, .eggpants, .shoppie, .tun, .yang, .bodyguard, .cavemanshoppie, .ghistshoppie, .vanhorsing, .parsley, .parsnip, .parmesan, .sparrow, .beg {
   order: 2;
+}
+.ana, .roffy, .colin, .margaret {
+  display: none;
 }
 .totemtrap, .liontrap, .slidingwall, .stickytrap {
   height: 32px;
