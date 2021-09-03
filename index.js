@@ -2,6 +2,9 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const open = require('open')
 const WebSocket = require('ws');
+const { ArgumentParser } = require('argparse');
+const { version } = require('./package.json');
+
 
 var app = express()
 const expressWs = require('express-ws')(app)
@@ -146,7 +149,17 @@ app.ws('/', (ws, req) => {
   })
 })
 
-var server = app.listen(27122, function () {
+
+const parser = new ArgumentParser({
+  description: 'Spelunky 2 RTA Tracker'
+});
+
+parser.add_argument('-v', '--version', { action: 'version', version });
+parser.add_argument('-p', '--port', { type: 'int', help: 'Port to listen on', default: 27122 });
+
+const args = parser.parse_args();
+
+var server = app.listen(args.port, function () {
   var port = server.address().port
   console.log(`Tracker is listening on http://localhost:${port}`)
   console.log(`If playing co-op join a room at http://localhost:${port}/join-room`)
