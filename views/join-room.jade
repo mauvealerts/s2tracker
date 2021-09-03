@@ -16,3 +16,10 @@ html(lang="en")
         div
           input(type='submit', value='Join')
 
+      br
+      br
+
+      h4 Reset Journal
+      form(action='/clear', method='POST')
+        div
+          input(type='button', value='Sync Reset', onclick='fetch("/clear", {method: "POST"})')

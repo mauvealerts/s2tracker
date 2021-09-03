@@ -12,14 +12,18 @@ app.use('/', express.static(__dirname + '/static'))
 app.set('views', './views')
 app.set('view engine', 'jade')
 
-var journal = Array(numEntries).fill(0)
-journal[0] = 1
-journal[0x5e] = 1
-journal[0x5f] = 1
-journal[0x60] = 1
-journal[0x61] = 1
+const initState = () => {
+  let journal = Array(numEntries).fill(0)
+  journal[0] = 1
+  journal[0x5e] = 1
+  journal[0x5f] = 1
+  journal[0x60] = 1
+  journal[0x61] = 1
 
-var state = { 'journal': journal }
+  return { 'journal': journal };
+}
+
+var state = initState();
 var roomCode = null;
 var fyiConnection = null;
 
@@ -53,6 +57,9 @@ const connectFyi = (connectRoomCode) => {
     data = JSON.parse(data);
     if (data['action'] == 'update') {
       updateJournal(data['data'])
+      broadcast(state);
+    } else if (data['action'] == 'clear') {
+      state = initState();
       broadcast(state);
     }
   })
@@ -115,6 +122,19 @@ app.post('/', (req, res) => {
     }))
   }
   broadcast(state)
+})
+
+app.post('/clear', (req, res) => {
+  res.sendStatus(200)
+  console.log('Got request to clear journal')
+  state = initState();
+  broadcast(state);
+  if (fyiConnection !== null) {
+    console.log('Clearing state to spelunky.fyi')
+    fyiConnection.send(JSON.stringify({
+      'action': 'clear',
+    }))
+  }
 })
 
 app.ws('/', (ws, req) => {
