@@ -1,5 +1,4 @@
 const express = require('express')
-const bodyParser = require('body-parser')
 const open = require('open')
 const WebSocket = require('ws');
 const { ArgumentParser } = require('argparse');
@@ -10,10 +9,10 @@ var app = express()
 const expressWs = require('express-ws')(app)
 const numEntries = 0xec;
 
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(express.urlencoded())
 app.use('/', express.static(__dirname + '/static'))
 app.set('views', './views')
-app.set('view engine', 'jade')
+app.set('view engine', 'pug')
 
 const initState = () => {
   let journal = Array(numEntries).fill(0)
