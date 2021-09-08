@@ -13,7 +13,7 @@ const numEntries = 0xec;
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use('/', express.static(__dirname + '/static'))
 app.set('views', './views')
-app.set('view engine', 'jade')
+app.set('view engine', 'pug')
 
 const initState = () => {
   let journal = Array(numEntries).fill(0)
