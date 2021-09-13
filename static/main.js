@@ -150,7 +150,7 @@ var journal = {
       { 'name': 'HH', 'found': 0, 'area': AREAS.TIDE_POOL },
       { 'name': 'Eggpants', 'found': 0, 'area': AREAS.ICE_CAVES },
       { 'name': 'Shoppie', 'found': 0, 'area': AREAS.DWELLING },
-      { 'name': 'Tun', 'found': 0, 'area': AREAS.VOLCANA },
+      { 'name': 'Tun', 'found': 0, 'area': AREAS.JUNGLE },
       { 'name': 'Yang', 'found': 0, 'area': AREAS.DWELLING },
       { 'name': 'Tusk', 'found': 0, 'area': AREAS.TIDE_POOL },
       { 'name': 'Bodyguard', 'found': 0, 'area': AREAS.TIDE_POOL },
@@ -161,7 +161,7 @@ var journal = {
       { 'name': 'Parsley', 'found': 0, 'area': AREAS.JUNGLE },
       { 'name': 'Parsnip', 'found': 0, 'area': AREAS.JUNGLE },
       { 'name': 'Parmesan', 'found': 0, 'area': AREAS.JUNGLE },
-      { 'name': 'Sparrow', 'found': 0, 'area': AREAS.VOLCANA },
+      { 'name': 'Sparrow', 'found': 0, 'area': AREAS.JUNGLE },
       { 'name': 'Beg', 'found': 0, 'area': AREAS.MISC },
       { 'name': 'Yama', 'found': 0, 'area': AREAS.EGGPLANT_WORLD }
     ]
